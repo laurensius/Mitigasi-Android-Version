@@ -113,33 +113,56 @@ public class ServiceNotifikasi extends Service {
             if(load_data==true){
                 if(init==true){
                 	recent_jumlah_info_bencana = jumlah_info_bencana;
-                	recent_jumlah_peringatan_dini = jumlah_info_bencana;
+                	recent_jumlah_peringatan_dini = jumlah_peringatan_dini;
                     init = false;
                 }else{
                     if(jumlah_info_bencana > recent_jumlah_info_bencana){
                     	 tipe = "Informasi Bencana";
                     	 uri = "?id_info=".concat(id_info);
+                    	 Notification.Builder builder = new Notification.Builder(getApplication().getBaseContext());
+                         Intent notificationIntent = new Intent(getApplication().getBaseContext(),DetailNotif.class);
+                         notificationIntent.putExtra("uri", uri);
+                         PendingIntent pendingIntent = PendingIntent.getActivity(getApplication().getBaseContext(), 0,notificationIntent, 0);
+                         builder.setSmallIcon(R.drawable.ic_launcher)
+                                 .setContentTitle(tipe)
+                                 .setContentText("Informasi lebih lanjut klik disini")
+                                 .setContentIntent(pendingIntent);
+                         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                         builder.setSound(alarmSound);
+                         NotificationManager notificationManager = (NotificationManager) getApplication().getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                         Notification notification = builder.getNotification();
+                         notificationManager.notify(R.drawable.ic_launcher, notification);
                     }
                     if(jumlah_peringatan_dini > recent_jumlah_peringatan_dini){
-                   	 tipe = "Peringatan_dini";
-                	 uri = "?id_dini=".concat(id_dini);
+	                   	 tipe = "Peringatan Dini";
+	                	 uri = "?id_dini=".concat(id_dini);
+	                	 Notification.Builder builder = new Notification.Builder(getApplication().getBaseContext());
+	                     Intent notificationIntent = new Intent(getApplication().getBaseContext(),DetailNotif.class);
+
+	                     notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	                     notificationIntent.putExtra("uri", uri);
+	                     PendingIntent pendingIntent = PendingIntent.getActivity(getApplication().getBaseContext(), 0,notificationIntent, 0);
+	                     builder.setSmallIcon(R.drawable.ic_launcher)
+	                             .setContentTitle(tipe)
+	                             .setContentText("Informasi lebih lanjut klik disini")
+	                             .setContentIntent(pendingIntent);
+	                     Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+	                     builder.setSound(alarmSound);
+	                     NotificationManager notificationManager = (NotificationManager) getApplication().getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
+	                     Notification notification = builder.getNotification();
+	                     notificationManager.notify(R.drawable.ic_launcher, notification);
                    }
                     
-                    Notification.Builder builder = new Notification.Builder(getApplication().getBaseContext());
-                    Intent notificationIntent = new Intent(getApplication().getBaseContext(),DetailNotif.class);
-                    notificationIntent.putExtra("uri", uri);
-                    PendingIntent pendingIntent = PendingIntent.getActivity(getApplication().getBaseContext(), 0,notificationIntent, 0);
-                    builder.setSmallIcon(R.drawable.ic_launcher)
-                            .setContentTitle(tipe)
-                            .setContentText("Informasi lebih lanjut klik disini")
-                            .setContentIntent(pendingIntent);
-                    Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                    builder.setSound(alarmSound);
-                    NotificationManager notificationManager = (NotificationManager) getApplication().getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                    Notification notification = builder.getNotification();
-                    notificationManager.notify(R.drawable.ic_launcher, notification);
+                    Log.d("Recent jml info ", String.valueOf(recent_jumlah_info_bencana));
+                    Log.d("Recent jml dini ", String.valueOf(recent_jumlah_peringatan_dini));
+                    Log.d("Jumlah Info ", String.valueOf(jumlah_info_bencana));
+                    Log.d("Jumlah Dini ", String.valueOf(jumlah_peringatan_dini));
+                    Log.d("ID Info ", id_info);
+                    Log.d("ID Dini ", id_dini);
+                    
+                    
                     recent_jumlah_info_bencana = jumlah_info_bencana;
-                	recent_jumlah_peringatan_dini = jumlah_info_bencana;
+                	recent_jumlah_peringatan_dini = jumlah_peringatan_dini;
                 }
             }
         }
