@@ -5,15 +5,15 @@ import android.annotation.SuppressLint;
 import android.view.Window;
 import android.view.WindowManager;
 import android.app.*;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.*;
 import android.webkit.*;
+import android.widget.Toast;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class MainActivity extends Activity {
+public class DetailNotif extends Activity {
 	
 	protected ProgressDialog pDialog;
     protected Dialog dialBox;
@@ -25,7 +25,9 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        startService(new Intent(getBaseContext(), ServiceNotifikasi.class));
+        Intent intent = getIntent();
+        String uri = intent.getStringExtra("uri");
+        Toast.makeText(getApplicationContext(), uri, Toast.LENGTH_LONG).show();
         webView =(WebView)findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
@@ -44,29 +46,29 @@ public class MainActivity extends Activity {
             }
         });
         webView.loadUrl("http://192.168.0.101/mitigasi/index.php");
-        pDialog = new ProgressDialog(MainActivity.this);
+        pDialog = new ProgressDialog(DetailNotif.this);
         pDialog.setMessage("Sedang memuat...");
         pDialog.setCancelable(false);   
-        dialBox = createDialogBox();
+//        dialBox = createDialogBox();
     }
     
-    private Dialog createDialogBox(){
-        dialBox = new AlertDialog.Builder(this)
-                .setTitle("Keluar")
-                .setMessage("Apakah Anda akan keluar dari Aplikasi Mitigasi Bencana ?")
-                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        finish();
-                    }
-                })
-                .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialBox.dismiss();
-                    }
-                })
-                .create();
-        return dialBox;
-    }
+//    private Dialog createDialogBox(){
+//        dialBox = new AlertDialog.Builder(this)
+//                .setTitle("Keluar")
+//                .setMessage("Apakah Anda akan keluar dari Aplikasi Mitigasi Bencana ?")
+//                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int whichButton) {
+//                        finish();
+//                    }
+//                })
+//                .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int whichButton) {
+//                        dialBox.dismiss();
+//                    }
+//                })
+//                .create();
+//        return dialBox;
+//    }
     
     @Override
     public void onPause() {
@@ -85,17 +87,10 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed(){
-        dialBox.show();
-    }
-    
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
+//        dialBox.show();
+    	Intent i = new Intent(this,MainActivity.class);
+    	startActivity(i);
+    	finish();
     }
 }
 
