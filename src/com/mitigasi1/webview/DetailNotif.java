@@ -45,7 +45,9 @@ public class DetailNotif extends Activity {
                     pDialog.dismiss();
             }
         });
-        webView.loadUrl("http://192.168.0.101/mitigasi/index.php");
+//        http://localhost/mitigasi/?mod=detailnotif
+        String str = "http://192.168.0.101/mitigasi/?mod=detailnotif".concat(uri);
+        webView.loadUrl(str);
         pDialog = new ProgressDialog(DetailNotif.this);
         pDialog.setMessage("Sedang memuat...");
         pDialog.setCancelable(false);   
@@ -88,8 +90,8 @@ public class DetailNotif extends Activity {
     @Override
     public void onBackPressed(){
 //        dialBox.show();
-    	Intent i = new Intent(this,MainActivity.class);
-    	startActivity(i);
+//    	Intent i = new Intent(this,MainActivity.class);
+//    	startActivity(i);
     	finish();
     }
 }

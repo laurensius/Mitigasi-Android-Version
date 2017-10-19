@@ -118,12 +118,13 @@ public class ServiceNotifikasi extends Service {
                 }else{
                     if(jumlah_info_bencana > recent_jumlah_info_bencana){
                     	 tipe = "Informasi Bencana";
-                    	 uri = "?id_info=".concat(id_info);
+                    	 uri = "&tipe=informasi_bencana&id=".concat(id_info);
                     	 Notification.Builder builder = new Notification.Builder(getApplication().getBaseContext());
                          Intent notificationIntent = new Intent(getApplication().getBaseContext(),DetailNotif.class);
-                         notificationIntent.putExtra("uri", uri);
-                         PendingIntent pendingIntent = PendingIntent.getActivity(getApplication().getBaseContext(), 0,notificationIntent, 0);
-                         builder.setSmallIcon(R.drawable.ic_launcher)
+                         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+	                     notificationIntent.putExtra("uri", uri);
+	                     PendingIntent pendingIntent = PendingIntent.getActivity(getApplication().getBaseContext(), 0,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+	                     builder.setSmallIcon(R.drawable.ic_launcher)
                                  .setContentTitle(tipe)
                                  .setContentText("Informasi lebih lanjut klik disini")
                                  .setContentIntent(pendingIntent);
@@ -135,13 +136,12 @@ public class ServiceNotifikasi extends Service {
                     }
                     if(jumlah_peringatan_dini > recent_jumlah_peringatan_dini){
 	                   	 tipe = "Peringatan Dini";
-	                	 uri = "?id_dini=".concat(id_dini);
+	                	 uri = "&tipe=peringatan_dini&id=".concat(id_dini);
 	                	 Notification.Builder builder = new Notification.Builder(getApplication().getBaseContext());
 	                     Intent notificationIntent = new Intent(getApplication().getBaseContext(),DetailNotif.class);
-
-	                     notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	                     notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 	                     notificationIntent.putExtra("uri", uri);
-	                     PendingIntent pendingIntent = PendingIntent.getActivity(getApplication().getBaseContext(), 0,notificationIntent, 0);
+	                     PendingIntent pendingIntent = PendingIntent.getActivity(getApplication().getBaseContext(), 0,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 	                     builder.setSmallIcon(R.drawable.ic_launcher)
 	                             .setContentTitle(tipe)
 	                             .setContentText("Informasi lebih lanjut klik disini")
@@ -159,7 +159,6 @@ public class ServiceNotifikasi extends Service {
                     Log.d("Jumlah Dini ", String.valueOf(jumlah_peringatan_dini));
                     Log.d("ID Info ", id_info);
                     Log.d("ID Dini ", id_dini);
-                    
                     
                     recent_jumlah_info_bencana = jumlah_info_bencana;
                 	recent_jumlah_peringatan_dini = jumlah_peringatan_dini;
