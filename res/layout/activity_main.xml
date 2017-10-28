@@ -2,13 +2,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
     tools:context="com.mitigasi1.webview.MainActivity" >
-
+   
     <WebView
-        android:text="@string/hello_world"
+        android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#00ffff"
-        android:id="@+id/webview"/>
+        android:background="#00ffff"/>
+    
+    <LinearLayout
+        android:id="@+id/llOffline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+    	<ImageView
+	        android:id="@+id/imageview"
+	        android:contentDescription="@string/contentDesc"
+	        android:src="@drawable/no_network"
+	        android:layout_width="128dp"
+	        android:layout_height="128dp"/>
+    	<TextView
+    	    android:id="@+id/tvoffline"
+    	    android:text="@string/offline_str"
+    	    android:gravity="center"
+    	    android:layout_marginTop="60dp"
+    	    android:layout_marginLeft="10dp"
+    	    android:layout_marginRight="10dp"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textSize="8pt" />
+    </LinearLayout>
 
 </LinearLayout>

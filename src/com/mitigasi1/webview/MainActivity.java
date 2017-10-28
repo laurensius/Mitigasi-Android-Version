@@ -1,7 +1,7 @@
 package com.mitigasi1.webview;
 
 import android.annotation.SuppressLint;
-
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.app.*;
@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.*;
 import android.webkit.*;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends Activity {
@@ -18,6 +20,8 @@ public class MainActivity extends Activity {
 	protected ProgressDialog pDialog;
     protected Dialog dialBox;
     protected WebView webView;
+    protected ImageView imageView;
+    protected LinearLayout llOfline;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -26,12 +30,23 @@ public class MainActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         startService(new Intent(getBaseContext(), ServiceNotifikasi.class));
+        imageView = (ImageView)findViewById(R.id.imageview);
+        llOfline = (LinearLayout)findViewById(R.id.llOffline);
+        imageView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				webView.reload();
+				
+			}
+		});
         webView =(WebView)findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        webView.loadUrl("http://192.168.0.101/mitigasi/index.php");
         webView.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon){
+            	online();
                 if(pDialog.isShowing())
                     pDialog.dismiss();
                 pDialog.show();
@@ -39,15 +54,22 @@ public class MainActivity extends Activity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                if(pDialog.isShowing())
+                if(pDialog.isShowing()){
                     pDialog.dismiss();
+                }
+                
+            }
+            
+            @Override
+            public void onReceivedError(WebView view, int errorCod,String description, String failingUrl) {
+            	offline();
             }
         });
-        webView.loadUrl("http://192.168.0.101/mitigasi/index.php");
         pDialog = new ProgressDialog(MainActivity.this);
         pDialog.setMessage("Sedang memuat...");
         pDialog.setCancelable(false);   
         dialBox = createDialogBox();
+        
     }
     
     private Dialog createDialogBox(){
@@ -97,5 +119,17 @@ public class MainActivity extends Activity {
         }
         return false;
     }
+    
+    void online(){
+    	webView.setVisibility(0x00);
+        llOfline.setVisibility(0x08);
+    }
+    
+    void offline(){
+    	webView.setVisibility(0x08);
+        llOfline.setVisibility(0x00);
+    }
+    
+    
 }
 

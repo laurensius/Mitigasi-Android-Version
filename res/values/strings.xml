@@ -4,5 +4,7 @@
     <string name="app_name">WebView</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="contentDesc">No Network</string>
+    <string name="offline_str">Tidak dapat terhubung ke server.\nKlik gambar di atas untuk coba terhubung.</string>
 
 </resources>
